@@ -1,28 +1,42 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
-</template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { Fragment } from "vue-fragment";
+import Menu from "./components/menu/index";
+import { SessionStore, Session } from "./services/Session";
 
 export default {
-  name: 'App',
+  name: "App",
+  mounted() {
+    this.sessionEmitter();
+  },
+  updated() {
+    this.sessionEmitter();
+  },
   components: {
-    HelloWorld
+    Fragment,
+    Menu
+  },
+  methods: {
+    /*
+     * Emite um evento da session em contexto
+     */
+    sessionEmitter() {
+      if (!Session.isAuthorized) {
+        const session = SessionStore.load();
+        Session.isAuthorized = session.isAuthorized;
+        Session.token = session.token;
+        Session.user = session.user;
+      }
+      this.$rootApp.$emit("session", Session);
+    }
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<template>
+  <Fragment>
+    <Menu></Menu>
+    <div class="container-fluid">
+      <router-view></router-view>
+    </div>
+  </Fragment>
+</template>
