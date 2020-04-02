@@ -40,6 +40,7 @@ export default {
     signOut() {
       Session.destroy(SessionStore);
       this.$rootApp.$emit("session", noAuth);
+      this.$toastr.i("Sessão encerrada");
       this.$router.push("/sign-in");
     }
   }
@@ -47,7 +48,10 @@ export default {
 </script>
 
 <template>
-  <nav v-show="session.isAuthorized" class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav
+    v-show="session.isAuthorized"
+    class="navbar navbar-expand-lg navbar-light bg-light"
+  >
     <a class="navbar-brand" href="/#/dashboard">Vue Admin</a>
     <button
       class="navbar-toggler"
@@ -100,9 +104,12 @@ export default {
                 clip-rule="evenodd"
               />
             </svg>
-            {{session.user.name}}
+            {{ session.user.name }}
           </a>
-          <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="navbarDropdown">
+          <div
+            class="dropdown-menu dropdown-menu-md-right"
+            aria-labelledby="navbarDropdown"
+          >
             <a class="dropdown-item" href="/#/profile">Perfil</a>
             <a class="dropdown-item" href="/#/" v-on:click="signOut()">Sair</a>
           </div>

@@ -1,5 +1,6 @@
 <script>
 import { Session, SessionService, SessionStore } from "../../services/Session";
+import api from "../../services/Api";
 
 export default {
   name: "SignIn",
@@ -19,6 +20,7 @@ export default {
   methods: {
     async signIn() {
       try {
+        this.$toastr.i("Salvando ...");
         const session = await SessionService.start(
           this.login.email,
           this.login.password
@@ -28,9 +30,12 @@ export default {
         Session.token = session.token;
         Session.user = session.user;
         this.$rootApp.$emit("session", Session);
+        this.$toastr.removeByType("info");
         this.$router.push("/dashboard");
       } catch (error) {
-        console.log(error.message);
+        this.$toastr.removeByType("info");
+        const { message } = api.getHttpResponseError(error);
+        this.$toastr.e(message);
       }
     }
   }
@@ -40,7 +45,13 @@ export default {
 <template>
   <form class="form-signin" v-on:submit.prevent="signIn()">
     <div class="text-center mb-4">
-      <img class="mb-4" src="../../assets/bootstrap-solid.svg" alt width="72" height="72" />
+      <img
+        class="mb-4"
+        src="../../assets/bootstrap-solid.svg"
+        alt
+        width="72"
+        height="72"
+      />
       <h1 class="h3 mb-3 font-weight-normal">Admin</h1>
     </div>
 

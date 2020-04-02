@@ -36,4 +36,28 @@ export default class Api {
     const { data } = await http.delete(url);
     return data;
   }
+
+  static getHttpResponseError(data) {
+    const error = {
+      code: data.status ? data.status : null,
+      error: true,
+      message: "Erro não identificado"
+    };
+
+    if (
+      typeof data.response !== "undefined" &&
+      data.response.data !== "undefined"
+    ) {
+      data = data.response.data;
+    }
+    if (
+      typeof data.error !== "undefined" &&
+      typeof data.message !== "undefined"
+    ) {
+      error.message = data.message;
+    } else if (typeof data.message !== "undefined" && data.message !== "") {
+      error.message = data.message;
+    }
+    return error;
+  }
 }

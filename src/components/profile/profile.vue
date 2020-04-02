@@ -4,16 +4,20 @@ import api from "../../services/Api";
 export default {
   async created() {
     try {
-      const pro = await api.getAsync("/users/1");
+      const session = SessionStore.load();
+      this.session = session;
+      const pro = await api.getAsync(`/users/${session.user.id}`);
       this.profile = { password: null, password_confirm: null, ...pro };
     } catch (error) {
-      console.log(error);
+      const { message } = api.getHttpResponseError(error);
+      this.$toastr.e(message);
     }
   },
 
   data() {
     return {
-      profile: {}
+      profile: {},
+      session: {}
     };
   },
 
@@ -24,13 +28,14 @@ export default {
         (data.password || data.password_confirm) &&
         data.password !== data.password_confirm
       ) {
-        console.log("Senha e confirmação de senha não são identicas");
+        this.$toastr.w("Senha e confirmação de senha não são identicas");
         return false;
       }
       delete data.password_confirm;
       try {
+        this.$toastr.i("Salvando...");
         await api.putAsync("/users", data);
-        const session = SessionStore.load();
+        const session = this.session;
         const user = { ...session.user, name: data.name };
         const sessionUpdate = { ...session, user };
         SessionStore.store(sessionUpdate);
@@ -38,14 +43,16 @@ export default {
           isAuthorized: true,
           ...sessionUpdate
         });
-        console.log("Sucesso!");
+        this.$toastr.removeByType("info");
+        this.$toastr.s("Conta alterada com sucesso");
         this.profile = {
           ...this.profile,
           password: null,
           password_confirm: null
         };
       } catch (error) {
-        console.log(error);
+        const { message } = api.getHttpResponseError(error);
+        this.$toastr.e(message);
       }
       return false;
     }
@@ -60,7 +67,13 @@ export default {
     </div>
 
     <div class="form-label-group">
-      <input type="text" class="form-control" placeholder="Nome" v-model="profile.name" id="name" />
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Nome"
+        v-model="profile.name"
+        id="name"
+      />
       <label for="name">Nome</label>
     </div>
 
