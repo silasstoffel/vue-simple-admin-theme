@@ -8,6 +8,11 @@ export class SessionStore {
       user: {},
       token: null
     };
+
+    if (typeof stored === "undefined") {
+      return initialSession;
+    }
+
     if (!stored) {
       return initialSession;
     }

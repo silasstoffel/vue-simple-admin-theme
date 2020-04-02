@@ -100,7 +100,7 @@ export default {
                 clip-rule="evenodd"
               />
             </svg>
-            Mestre Tagtec
+            {{session.user.name}}
           </a>
           <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/#/profile">Perfil</a>
