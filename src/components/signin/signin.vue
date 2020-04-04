@@ -6,7 +6,7 @@ export default {
   name: "SignIn",
 
   created() {
-    if (Session.isAuthorized) {
+    if (this.$root.state.session.isAuthorized) {
       this.$router.push("/dashboard");
     }
   },
@@ -29,7 +29,11 @@ export default {
         Session.isAuthorized = true;
         Session.token = session.token;
         Session.user = session.user;
-        this.$rootApp.$emit("session", Session);
+        this.$root.state.session = {
+          isAuthorized: true,
+          token: session.token,
+          user: session.user
+        };
         this.$toastr.removeByType("info");
         this.$router.push("/dashboard");
       } catch (error) {

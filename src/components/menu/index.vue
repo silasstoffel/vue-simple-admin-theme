@@ -1,45 +1,11 @@
 <script>
 import { SessionStore, Session } from "../../services/Session";
 
-const noAuth = {
-  isAuthorized: false,
-  user: {},
-  token: null
-};
-
 export default {
-  created() {
-    this.$rootApp.$on("session", data => {
-      if (
-        typeof data.isAuthorized === "undefined" ||
-        typeof data.user === "undefined"
-      ) {
-        this.session = noAuth;
-        return;
-      }
-
-      if (!data.isAuthorized || typeof data.user.id === "undefined") {
-        this.session = noAuth;
-        return;
-      }
-      this.session = {
-        isAuthorized: data.isAuthorized,
-        user: data.user,
-        token: data.token
-      };
-    });
-  },
-
-  data() {
-    return {
-      session: noAuth,
-      info: null
-    };
-  },
   methods: {
     signOut() {
       Session.destroy(SessionStore);
-      this.$rootApp.$emit("session", noAuth);
+      this.$root.state.session = { isAuthorized: false, user: {}, token: null };
       this.$toastr.i("Sessão encerrada");
       this.$router.push("/sign-in");
     }
@@ -49,7 +15,7 @@ export default {
 
 <template>
   <nav
-    v-show="session.isAuthorized"
+    v-show="$root.state.session.isAuthorized"
     class="navbar navbar-expand-lg navbar-light bg-light"
   >
     <a class="navbar-brand" href="/#/dashboard">Vue Admin</a>
@@ -100,7 +66,7 @@ export default {
                 clip-rule="evenodd"
               />
             </svg>
-            {{ session.user.name }}
+            {{ $root.state.session.user.name }}
           </a>
           <div
             class="dropdown-menu dropdown-menu-md-right"

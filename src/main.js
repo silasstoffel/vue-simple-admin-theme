@@ -18,10 +18,6 @@ Vue.use(VueRouter);
 Vue.use(VueToastr, toastr);
 Vue.use(VueTheMask);
 
-// Uma forma de criar instancia global acessível
-// a todos os componentes
-Vue.prototype.$rootApp = new Vue();
-
 const router = new VueRouter({ routes });
 const publicRouters = ["/sign-in", "/sign-up"];
 
@@ -42,5 +38,8 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   router,
+  data() {
+    return { state: { session: Session } };
+  },
   render: h => h(App)
 }).$mount("#app");

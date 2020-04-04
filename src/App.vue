@@ -1,34 +1,17 @@
 <script>
 import { Fragment } from "vue-fragment";
 import Menu from "./components/menu/index";
-import { SessionStore, Session } from "./services/Session";
+//import { SessionStore, Session } from "./services/Session";
 
 export default {
   name: "App",
-  mounted() {
-    this.sessionEmitter();
-  },
-  updated() {
-    this.sessionEmitter();
-  },
+  mounted() {},
+  updated() {},
   components: {
     Fragment,
     Menu
   },
-  methods: {
-    /*
-     * Emite um evento da session em contexto
-     */
-    sessionEmitter() {
-      if (!Session.isAuthorized) {
-        const session = SessionStore.load();
-        Session.isAuthorized = session.isAuthorized;
-        Session.token = session.token;
-        Session.user = session.user;
-      }
-      this.$rootApp.$emit("session", Session);
-    }
-  }
+  methods: {}
 };
 </script>
 
