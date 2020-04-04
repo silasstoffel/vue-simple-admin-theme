@@ -1,4 +1,6 @@
+import settings from "../../public/app.settings.json";
+
 export default {
-  baseUrl: "http://localhost:3000",
+  baseUrl: settings.api_url,
   timeOut: 60000
 };
