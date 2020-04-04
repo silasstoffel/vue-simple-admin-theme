@@ -1,4 +1,5 @@
 <script>
+import mask from "../../config/mask";
 import { SessionStore } from "../../services/Session";
 import api from "../../services/Api";
 export default {
@@ -17,7 +18,8 @@ export default {
   data() {
     return {
       profile: {},
-      session: {}
+      session: {},
+      mask
     };
   },
 
@@ -91,14 +93,15 @@ export default {
     </div>
 
     <div class="form-label-group">
-      <input
+      <the-mask
         type="text"
         class="form-control"
         placeholder="Celular"
         v-model="profile.mobile_phone"
         id="mobile_phone"
         required
-      />
+        :mask="mask.brCelular"
+      ></the-mask>
       <label for="mobile_phone">Celular</label>
     </div>
 

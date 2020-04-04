@@ -73,10 +73,6 @@ export default {
             <span class="sr-only">(current)</span>
           </a>
         </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/#/sign-up">Login</a>
-        </li>
       </ul>
 
       <ul class="navbar-nav ml-md-auto mr-md-1">

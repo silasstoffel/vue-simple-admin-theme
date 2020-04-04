@@ -85,7 +85,7 @@ export default {
     <hr class="mb" />
 
     <p>
-      <a href="/signup">Criar conta</a>
+      <a href="/#/sign-up">Criar conta</a>
     </p>
   </form>
 </template>

@@ -2,15 +2,13 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import { Plugin } from "vue-fragment";
 import VueToastr from "vue-toastr";
+import VueTheMask from "vue-the-mask";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 // Configs
-import { toastr } from "./config";
-
+import { toastr } from "./config/index";
 // Services
 import { SessionStore, Session } from "./services/Session";
-
 import routes from "./routes";
 import App from "./App.vue";
 
@@ -18,7 +16,10 @@ Vue.config.productionTip = false;
 Vue.use(Plugin);
 Vue.use(VueRouter);
 Vue.use(VueToastr, toastr);
+Vue.use(VueTheMask);
 
+// Uma forma de criar instancia global acessível
+// a todos os componentes
 Vue.prototype.$rootApp = new Vue();
 
 const router = new VueRouter({ routes });
@@ -41,13 +42,5 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   router,
-  render: h => h(App),
-  mounted() {
-    this.$toastr.defaultTimeout = toastr.defaultTimeout;
-    this.$toastr.defaultProgressBar = toastr.defaultProgressBar;
-    this.$toastr.defaultProgressBarValue = toastr.defaultProgressBarValue;
-    this.$toastr.defaultCloseOnHover = toastr.defaultCloseOnHover;
-    this.$toastr.defaultType = toastr.defaultType;
-    this.$toastr.defaultPosition = toastr.defaultPosition;
-  }
+  render: h => h(App)
 }).$mount("#app");
