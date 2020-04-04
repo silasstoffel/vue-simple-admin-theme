@@ -22,4 +22,4 @@ yarn-error.log*
 
 
 # custom
-./public/app.settings.json
+public/app.settings.json
